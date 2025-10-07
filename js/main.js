@@ -3,13 +3,13 @@ function generatePhotosArray() {
   const commentIds = new Set();
 
   // Константы из условия задачи
-  const photosCount = 25;
-  const minLikes = 15;
-  const maxLikes = 200;
-  const minComments = 0;
-  const maxComments = 30;
-  const minAvatar = 1;
-  const maxAvatar = 6;
+  const PHOTOS_COUNT = 25;
+  const MIN_LIKES = 15;
+  const MAX_LIKES = 200;
+  const MIN_COMMENTS = 0;
+  const MAX_COMMENTS = 30;
+  const MIN_AVATAR = 1;
+  const MAX_AVATAR = 6;
 
   // Массив возможных описаний фотографий
   const descriptions = [
@@ -75,7 +75,7 @@ function generatePhotosArray() {
 
   // Функция для генерации комментариев
   function generateComments() {
-    const commentsCount = getRandomInt(minComments, maxComments);
+    const commentsCount = getRandomInt(MIN_COMMENTS, MAX_COMMENTS);
     const comments = [];
 
     for (let i = 0; i < commentsCount; i++) {
@@ -98,7 +98,7 @@ function generatePhotosArray() {
 
       comments.push({
         id: generateCommentId(),
-        avatar: `img/avatar-${getRandomInt(minAvatar, maxAvatar)}.svg`,
+        avatar: `img/avatar-${getRandomInt(MIN_AVATAR, MAX_AVATAR)}.svg`,
         message: message,
         name: names[getRandomInt(0, names.length - 1)]
       });
@@ -107,12 +107,12 @@ function generatePhotosArray() {
     return comments;
   }
 
-  for (let i = 1; i <= photosCount; i++) {
+  for (let i = 1; i <= PHOTOS_COUNT; i++) {
     const photo = {
       id: i,
       url: `photos/${i}.jpg`,
       description: descriptions[i - 1],
-      likes: getRandomInt(minLikes, maxLikes),
+      likes: getRandomInt(MIN_LIKES, MAX_LIKES),
       comments: generateComments()
     };
 
