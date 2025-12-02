@@ -24,12 +24,16 @@ const createCommentElement = (comment) => {
 // Функция для отображения порции комментариев
 const renderCommentsPortion = (comments, startIndex, commentsList, commentsCountElement, loaderButton) => {
   const endIndex = Math.min(startIndex + COMMENTS_PER_PORTION, comments.length);
+  if (startIndex === 0) {
+    commentsList.innerHTML = '';
+  }
 
-  // Показываем комментарии с startIndex до endIndex
+  // Показываем комментарии
   for (let i = startIndex; i < endIndex; i++) {
     const commentElement = createCommentElement(comments[i]);
     commentsList.appendChild(commentElement);
   }
+
   commentsCountElement.innerHTML = `${endIndex} из <span class="comments-count">${comments.length}</span> комментариев`;
 
   // Скрываем кнопку, если показали все комментарии
@@ -85,9 +89,6 @@ const openFullscreenPhoto = (photo) => {
   likesCount.textContent = photo.likes;
   commentsCount.textContent = photo.comments.length;
   socialCaption.textContent = photo.description;
-
-  // Очищаем список комментариев
-  commentsList.innerHTML = '';
 
   commentsLoader.classList.remove('hidden');
   socialCommentCount.classList.remove('hidden');
