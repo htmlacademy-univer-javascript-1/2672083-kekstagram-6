@@ -1395,3 +1395,24 @@ main {
 .hidden {
   display: none;
 }
+
+
+/* Центрированный текст под полем */
+.img-upload__field-wrapper {
+  position: relative;
+  margin-bottom: 30px;
+  top: 0;
+}
+
+.img-upload__error-text {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: red;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+}
