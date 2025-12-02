@@ -1,4 +1,8 @@
-import {generatePhotosArray} from './data';
-generatePhotosArray();
+import { generatePhotosArray } from './data.js';
 import { renderThumbnails } from './thumbnails.js';
-renderThumbnails();
+
+// Генерируем массив фотографий
+const photosArray = generatePhotosArray();
+
+// Вызываем функцию отрисовки
+renderThumbnails(photosArray);
