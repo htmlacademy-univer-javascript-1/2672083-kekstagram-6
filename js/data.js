@@ -1,4 +1,4 @@
-import {getRandomInt} from './util';
+import {getRandomInt} from './util.js';
 import {
   PHOTOS_COUNT,
   MIN_LIKES,

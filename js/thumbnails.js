@@ -1,15 +1,10 @@
-import { photosArray } from './main.js';
+import { openFullscreenPhoto } from './fullscreen.js';
 
-//функция для отрисовки миниатюр
-function renderThumbnails() {
+function renderThumbnails(photosArray) {
   const container = document.querySelector('.pictures');
   const template = document.querySelector('#picture');
   const fragment = document.createDocumentFragment();
 
-  // Очищаем контейнер
-  container.innerHTML = '';
-
-  // Создаем и добавляем все миниатюры
   photosArray.forEach((photo) => {
     const thumbnail = template.content.querySelector('.picture').cloneNode(true);
 
@@ -22,8 +17,11 @@ function renderThumbnails() {
     likes.textContent = photo.likes;
     comments.textContent = photo.comments.length;
 
-    // Сохраняем ID
-    thumbnail.dataset.id = photo.id;
+    // обработчик клика на миниатюру
+    thumbnail.addEventListener('click', (evt) => {
+      evt.preventDefault();
+      openFullscreenPhoto(photo);
+    });
 
     fragment.appendChild(thumbnail);
   });
