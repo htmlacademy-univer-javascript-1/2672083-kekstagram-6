@@ -1,4 +1,6 @@
-// Функция для создания элемента комментария
+const COMMENTS_PER_PORTION = 5;
+const AVATAR_WIDTH = 35;
+const AVATAR_HEIGHT = 35;
 const createCommentElement = (comment) => {
   const commentElement = document.createElement('li');
   commentElement.classList.add('social__comment');
@@ -7,8 +9,8 @@ const createCommentElement = (comment) => {
   avatarImg.classList.add('social__picture');
   avatarImg.src = comment.avatar;
   avatarImg.alt = comment.name;
-  avatarImg.width = 35;
-  avatarImg.height = 35;
+  avatarImg.width = AVATAR_WIDTH;
+  avatarImg.height = AVATAR_HEIGHT;
 
   const commentText = document.createElement('p');
   commentText.classList.add('social__text');
@@ -19,6 +21,24 @@ const createCommentElement = (comment) => {
   return commentElement;
 };
 
+// Функция для отображения порции комментариев
+const renderCommentsPortion = (comments, startIndex, commentsList, commentsCountElement, loaderButton) => {
+  const endIndex = Math.min(startIndex + COMMENTS_PER_PORTION, comments.length);
+
+  // Показываем комментарии с startIndex до endIndex
+  for (let i = startIndex; i < endIndex; i++) {
+    const commentElement = createCommentElement(comments[i]);
+    commentsList.appendChild(commentElement);
+  }
+  commentsCountElement.innerHTML = `${endIndex} из <span class="comments-count">${comments.length}</span> комментариев`;
+
+  // Скрываем кнопку, если показали все комментарии
+  if (endIndex >= comments.length) {
+    loaderButton.classList.add('hidden');
+  }
+
+  return endIndex;
+};
 
 // Функция для настройки обработчиков закрытия
 const setupCloseHandlers = (bigPicture) => {
@@ -54,9 +74,10 @@ const openFullscreenPhoto = (photo) => {
   const socialCaption = bigPicture.querySelector('.social__caption');
   const commentsList = bigPicture.querySelector('.social__comments');
 
-  // Находим блоки которые нужно скрыть
+  // Находим блоки для постраничной загрузки
   const commentsLoader = bigPicture.querySelector('.comments-loader');
   const socialCommentCount = bigPicture.querySelector('.social__comment-count');
+  //const commentsCountElement = socialCommentCount.querySelector('.comments-count');
 
   //Заполняем данные фотографии
   bigImage.src = photo.url;
@@ -68,16 +89,27 @@ const openFullscreenPhoto = (photo) => {
   // Очищаем список комментариев
   commentsList.innerHTML = '';
 
-  // Добавляем комментарии
-  photo.comments.forEach((comment) => {
-    const commentElement = createCommentElement(comment);
-    commentsList.appendChild(commentElement);
-  });
+  commentsLoader.classList.remove('hidden');
+  socialCommentCount.classList.remove('hidden');
 
-  //Скрываем лишние блоки
-  commentsLoader.classList.add('hidden');
-  socialCommentCount.classList.add('hidden');
+  // Переменные для постраничной загрузки
+  let currentCommentIndex = 0;
+  const allComments = photo.comments;
 
+  //Функция для загрузки следующей порции
+  const loadMoreComments = () => {
+    currentCommentIndex = renderCommentsPortion(
+      allComments,
+      currentCommentIndex,
+      commentsList,
+      socialCommentCount,
+      commentsLoader
+    );
+  };
+
+  loadMoreComments();
+
+  commentsLoader.addEventListener('click', loadMoreComments);
   bigPicture.classList.remove('hidden');
 
   document.body.classList.add('modal-open');
