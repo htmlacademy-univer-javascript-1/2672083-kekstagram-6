@@ -1,4 +1,4 @@
-// Константы
+import { initImageEffects, resetEffects } from './image-effects.js';
 const MAX_HASHTAGS = 5;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_COMMENT_LENGTH = 140;
@@ -118,6 +118,7 @@ const closeUploadForm = () => {
   pristine.reset();
   uploadFileInput.value = '';
   document.removeEventListener('keydown', onDocumentKeydown);
+  resetEffects();
 };
 
 // Обработчик клавиши Esc для формы
@@ -237,7 +238,6 @@ const setFormSubmit = () => {
           throw new Error('Ошибка сервера');
         }
       } catch (error) {
-        // При ошибке не закрывает форму редактирования
         showErrorMessage();
       } finally {
         unblockSubmitButton();
@@ -246,10 +246,9 @@ const setFormSubmit = () => {
   });
 };
 
-// Инициализация
 const initFormValidation = () => {
   setFormSubmit();
+  initImageEffects();
 };
 
-// Экспорт
 export { initFormValidation, closeUploadForm };
